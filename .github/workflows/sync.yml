@@ -17,3 +17,4 @@ jobs:
           base: main
           head: main
           ignore_fail: true
+          retries: 1
