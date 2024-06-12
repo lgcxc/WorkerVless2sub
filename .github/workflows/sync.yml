@@ -16,9 +16,4 @@ jobs:
           owner: lgcxc
           base: main
           head: main
-          
-      - name: Check for Failure
-        if: failure()
-        run: |
-            echo "No commits"
-            exit 0
+          ignore_fail: 'No commits'
