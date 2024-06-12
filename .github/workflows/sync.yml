@@ -11,9 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: tgymnich/fork-sync@v1.8
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+        with:
+          repository: lgcxc/WorkerVless2sub
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add upstream repository
+        run: git remote add upstream https://github.com/cmliu/WorkerVless2sub.git
+
+      - name: Fetch upstream repository
+        run: git fetch upstream
+
+      - name: Check for differences
+        id: check_diff
+        run: |
+          git diff --quiet origin/main upstream/main
+          echo "DIFF_EXISTS=$?" >> $GITHUB_ENV
+
+      - name: Run fork-sync if there are differences
+        if: env.DIFF_EXISTS != '0'
+        uses: tgymnich/fork-sync@v1.8
         with:
           owner: lgcxc
           base: main
           head: main
-          ignore_fail: 'No commits'
